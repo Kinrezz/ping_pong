@@ -15,14 +15,18 @@ class GameSprite(sprite.Sprite):
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
 class Player(GameSprite):
-    def update(self):
+    def update_1(self):
         keys_pressed = key.get_pressed()
-        if keys_pressed[K_LEFT] and self.rect.x > 5:
-            self.rect.x -= self.speed
-        if keys_pressed[K_RIGHT] and self.rect.x < 630:
-            self.rect.x += self.speed
-        if keys_pressed[K_SPACE]:
-            self.fire()
+        if keys_pressed[K_UP] and self.rect.y > 0:
+            self.rect.y -= self.speed
+        if keys_pressed[K_DOWN] and self.rect.y < 365:
+            self.rect.y += self.speed
+    def update_2(self):
+        keys_pressed = key.get_pressed()
+        if keys_pressed[K_w] and self.rect.y > 0:
+            self.rect.y -= self.speed
+        if keys_pressed[K_s] and self.rect.y < 365:
+            self.rect.y += self.speed
 class Ball(GameSprite):
     def update(self, player):
         self.rect.y += self.speed
@@ -41,7 +45,8 @@ clock = time.Clock()
 run = True
 finish = False 
 #dfdfd
-racket = Player('racket.png', 50, 250, 7, 39, 136)
+racket1 = Player('racket.png', 5, 200, 7, 39, 136)
+racket2 = Player('racket.png', 650, 200, 7, 39, 136)
 #цикл
 win = font.Font(None, 60).render('Ура победа', True, (40,240,40))
 lose = font.Font(None, 60).render('Поражение', True, (240,40,40))
@@ -50,7 +55,11 @@ while run:
         if e.type == QUIT:
             run = False
     if finish == False:
-        racket.reset()
+        window.fill(wc)
+        racket1.update_1()
+        racket2.update_2()
+        racket1.reset()
+        racket2.reset()
     display.update()
     clock.tick(60)
     
