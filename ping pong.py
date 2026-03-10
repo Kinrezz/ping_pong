@@ -24,12 +24,13 @@ class Player(GameSprite):
         if keys_pressed[K_SPACE]:
             self.fire()
 class Ball(GameSprite):
-    def update(self, player):
-        self.rect.y += self.speed
-        if self.rect.y > 500 or sprite.spritecollide(player, monsters, False):
-            self.rect.y = 0
-            self.rect.x = randint(0, 620)
-            player.lost += 1
+    speed_x = 3
+    speed_y = 3
+    def update(self):
+        if ball.rect.y > 450 or ball.rect.y < 0:
+            Ball.speed_y *= -1
+        self.rect.x += Ball.speed_x
+        self.rect.y += Ball.speed_y
 #создай окно игры
 window = display.set_mode((700, 500))
 display.set_caption('Ping Pong')
@@ -42,6 +43,7 @@ run = True
 finish = False 
 #dfdfd
 racket = Player('racket.png', 50, 250, 7, 39, 136)
+ball = Ball('tenis_ball.png', 250, 250, 7, 50, 60)
 #цикл
 win = font.Font(None, 60).render('Ура победа', True, (40,240,40))
 lose = font.Font(None, 60).render('Поражение', True, (240,40,40))
@@ -51,6 +53,8 @@ while run:
             run = False
     if finish == False:
         racket.reset()
+        ball.update()
+        ball.reset()
     display.update()
     clock.tick(60)
     
